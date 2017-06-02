@@ -81,5 +81,7 @@ binQTLScan <- function(phenotype="", genotype="", population="RIL") {
   colnames(out) <- varnames
   rownames(out) <- 1:nrow(out)
   result <- data.frame(genotype[, 1:4], out, stringsAsFactors=FALSE)
+  result <- result[, c("Bin", "Chr", "Start", "Stop", "plrt", "logplrt")]
+  names(result)[5:6] <- c("p", "-logp")
   return(result)
 }

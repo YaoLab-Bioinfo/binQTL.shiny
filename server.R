@@ -90,10 +90,8 @@ shinyServer(function(input, output, session) {
 			  } else {
 			    if (input$popInput==1) {
 			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G)
-			      qtl.res <<- qtl.res[, c(1:4, 16:17, 19:23)]
 			    } else {
 			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G, population = "F2")
-			      qtl.res <<- qtl.res[, c(1:4, 18:20, 22:26)]
 			    }
 			  }
 			  
@@ -113,7 +111,7 @@ shinyServer(function(input, output, session) {
 	      if (input$qtlApp==1) {
 	        qtl.res.fil <<- qtl.res[, c(1:4, 6)]
 	      } else {
-	        qtl.res.fil <<- qtl.res[, c("Bin", "Chr", "Start", "Stop", "logplrt")]
+	        qtl.res.fil <<- qtl.res[, c(1:4, 6)]
 	      }
 	      
 	      # The plot dimensions
