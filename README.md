@@ -7,7 +7,7 @@ Installation
 ------------
 
 Launch binQTL.shiny directly from R and GitHub:
-  - Before running the app you will need to have R and RStudio installed (tested with R 3.2.1 and RStudio 0.99.465).
+  - Before running the app you will need to have R and RStudio installed (tested with R 3.3.3 and RStudio 1.0.143).
   - Launch the R console
 
 - Please run these lines in R:
