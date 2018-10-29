@@ -3,16 +3,6 @@ options(shiny.maxRequestSize = 200*1024^2)
 
 shinyServer(function(input, output, session) {
   
-  source("plotBinmap.R")
-  source("genoConv.R")
-  source("aovQTL.R")
-  source("binQTLScan.R")
-  source("kinship.R")
-  source("randomFunction.R")
-  source("plotQTL.R")
-  
- 
-  
   # Genotype data
   data.G <- NULL
   observe({
@@ -41,6 +31,18 @@ shinyServer(function(input, output, session) {
           print(class(data.G))
           plotBinmap(data.G, xlab=ge.xlab, ylab=ge.ylab, main=ge.main)
         }, height = bin.height, width = bin.width)
+        
+        output$genotable <- renderDataTable({
+          data.G[, 1:8]
+        }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
+        
+        # *** Download genotype data in csv format ***
+        output$downloadGenoRes <- downloadHandler(
+          filename = function() { "genotype.csv" },
+          content = function(file) {
+            write.csv(data.G, file, row.names=FALSE)
+          })
+        
       })
     } else {NULL}
   })
@@ -74,6 +76,18 @@ shinyServer(function(input, output, session) {
           print(class(data.P))
           hist(data.P[,2], ylab=phe.ylab, xlab=phe.xlab, main=phe.main)
         }, height = phe.height, width = phe.width)
+        
+        output$phenotable <- renderDataTable({
+          data.P
+        }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
+        
+        # *** Download phenotype data in csv format ***
+        output$downloadPheRes <- downloadHandler(
+          filename = function() { "phenotype.csv" },
+          content = function(file) {
+            write.csv(data.P, file, row.names=FALSE)
+          })
+        
       })  
     } else {NULL}
     
@@ -95,9 +109,9 @@ shinyServer(function(input, output, session) {
 			    }
 			  }
 			  
-		  	output$qtltable <- renderTable({
+		  	output$qtltable <- renderDataTable({
 	        qtl.res
-	      })
+	      }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
 		  })
 		} else {NULL}
 	})

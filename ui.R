@@ -1,7 +1,7 @@
 
 shinyUI(pageWithSidebar(
 
-	headerPanel("binQTL: QTL mapping with binmap data",
+	headerPanel("binQTL: Mapping Quantitative Trait Loci using Binned Genotypes",
 		tags$head(tags$style(type="text/css", "label.radio { display: inline-block; }", ".radio input[type=\"radio\"] { float: none; }"),
 		tags$style(type="text/css", "select { max-width: 200px; }"),
 		tags$style(type="text/css", "textarea { max-width: 185px; }"),
@@ -143,49 +143,44 @@ shinyUI(pageWithSidebar(
 
 			# Genotype Data upload tab
 			tabPanel("Genotype Data", 
-			    plotOutput("binmap", height='100%', width='100%'),
-				h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
-				" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
-				a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
+			  plotOutput("binmap", height='100%', width='100%'),
+			  downloadButton("downloadGenoRes", "Download genotype data as .CSV file"), 
+			  dataTableOutput("genotable")
+			  
 			),
 
 			# Phenotype Data upload tab
 			tabPanel("Phenotype Data", 
-			    plotOutput("pheno", height='100%', width='100%'),
-				h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
-				" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
-				a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
+			  plotOutput("pheno", height='100%', width='100%'),
+			  downloadButton("downloadPheRes", "Download phenotype data as .CSV file"), 
+			  dataTableOutput("phenotable")
+			    
 			),
 
 			# QTL mapping
 			tabPanel("QTL mapping",
 				downloadButton("downloadQtlRes", "Download QTL mapping results as .CSV file"), 
-				tableOutput("qtltable"),
-				h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
-				" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
-				a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
+				dataTableOutput("qtltable")
+				
 			),
 
 			# QTL visualization
 			tabPanel("QTL visualization", 
 				downloadButton("downloadPlotPDF", "Download pdf-file"),
 				downloadButton("downloadPlotSVG", "Download svg-file"),
-				plotOutput("qtlfigure", height='100%', width='100%'),
-
-				h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
-				" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
-				a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
+				plotOutput("qtlfigure", height='100%', width='100%')
+				
 			), 
 
 			# FAQ 
-			tabPanel("FAQ",
-				h5("Q:"), 
-				p("A:"),
-
-				h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
-				" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
-				a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
-			),			
+			# tabPanel("FAQ",
+			# 	h5("Q:"), 
+			# 	p("A:"),
+			# 
+			# 	h6("This application was created by ", a("Wen Yao", href="https://www.researchgate.net/profile/Wen_Yao"), " and ", a("Shizhong Xu", href="http://cepceb.ucr.edu/people/xu-s.html"), 
+			# 	" . Please send bugs and feature requests to Wen Yao (ywhzau at gmail.com). This application uses the ", 
+			# 	a("shiny package from RStudio", href="http://www.rstudio.com/shiny/"), ".")
+			# ),			
 			id="tabs1"
 		)
 	)
