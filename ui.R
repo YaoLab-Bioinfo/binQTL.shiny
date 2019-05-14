@@ -19,7 +19,9 @@ shinyUI(pageWithSidebar(
 			h4("Enter genotype data"),
 			radioButtons("dataGInput", "", list("Load sample data"=1,"Upload file"=2)),
 			conditionalPanel(condition="input.dataGInput=='1'",
-				radioButtons("sampleDataG", "Load sample genotype data", list("Data of 210 RILs"=1,"Data of 278 IMF2s"=2))
+				radioButtons("sampleDataG", "Load sample genotype data", list("Data of 210 RILs"=1,
+				                                                              "Data of 278 IMF2s"=2,
+				                                                              "Data of 458 MAGIC mouse"=3))
 			),
 			conditionalPanel(condition="input.dataGInput=='2'",
 				h5("Upload genotype data: "),
@@ -53,7 +55,9 @@ shinyUI(pageWithSidebar(
 			h4("Enter phenotype data"),
 			radioButtons("dataPInput", "", list("Load sample data"=1,"Upload file"=2)),
 			conditionalPanel(condition="input.dataPInput=='1'",
-				radioButtons("sampleDataP", "Load sample phenotype data", list("Data of 210 RILs"=1,"Data of 278 IMF2s"=2))
+				radioButtons("sampleDataP", "Load sample phenotype data", list("Data of 210 RILs"=1,
+				                                                               "Data of 278 IMF2s"=2,
+				                                                               "Data of 458 MAGIC mouse"=3))
 			),
 			conditionalPanel(condition="input.dataPInput=='2'",
 				h5("Upload phenotype data: "),
@@ -89,7 +93,8 @@ shinyUI(pageWithSidebar(
 		    HTML('<br>'),
 		    conditionalPanel(condition="input.qtlApp=='2'",
 			h4("Population type"),
-		    	radioButtons("popInput", "", list("RIL population"=1,"F2 population"=2))	
+		    	radioButtons("popInput", "", list("RIL population"=1, "F2 population"=2, 
+		    	                                  "MAGIC population"=3))
 		    ),
 		    
 		    HTML('<br>'),
@@ -185,10 +190,5 @@ shinyUI(pageWithSidebar(
 		)
 	)
 ))
-
-
-
-
-
 
 

@@ -11,8 +11,10 @@ shinyServer(function(input, output, session) {
         if(input$dataGInput==1){
           if(input$sampleDataG==1){
             data.G <<- read.csv("ril.geno.csv", as.is=TRUE)
-          } else {
+          } else if(input$sampleDataG==2) {
             data.G <<- read.csv("imf2.geno.csv", as.is=TRUE)
+          } else if(input$sampleDataG==3) {
+            data.G <<- read.csv("magic.geno.csv.gz", as.is=TRUE)
           }
         } else if(input$dataGInput==2){
           inFile <- input$uploadG
@@ -26,15 +28,28 @@ shinyServer(function(input, output, session) {
         ge.main <- input$geTitle
         ge.ylab <- input$geYlab
         
-        # binmap 
-        output$binmap <- renderPlot({
-          print(class(data.G))
-          plotBinmap(data.G, xlab=ge.xlab, ylab=ge.ylab, main=ge.main)
-        }, height = bin.height, width = bin.width)
-        
-        output$genotable <- renderDataTable({
-          data.G[, 1:8]
-        }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
+        # binmap
+        dat.binmap <- data.G
+        if(input$sampleDataG != 3) {
+          output$binmap <- renderPlot({
+            print(class(dat.binmap))
+            plotBinmap(dat.binmap, xlab=ge.xlab, ylab=ge.ylab, main=ge.main)
+            
+          }, height = bin.height, width = bin.width)
+          
+          output$genotable <- renderDataTable({
+            data.G[, 1:8]
+          }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
+        } else {
+          output$binmap <- renderPlot({
+            print(class(dat.binmap))
+            NULL
+          }, height = 1, width = 1)
+          
+          output$genotable <- renderDataTable({
+            data.G[, 1:8]
+          }, options = list(lengthMenu = c(20, 40, 60), pageLength = 20, searching = TRUE, autoWidth = TRUE), escape = FALSE)
+        }
         
         # *** Download genotype data in csv format ***
         output$downloadGenoRes <- downloadHandler(
@@ -56,8 +71,10 @@ shinyServer(function(input, output, session) {
         if(input$dataPInput==1){
           if(input$sampleDataP==1){
             data.P <<- read.csv("ril.phe.csv", as.is=TRUE)
-          } else {
+          } else if(input$sampleDataP==2) {
             data.P <<- read.csv("imf2.phe.csv", as.is=TRUE)
+          } else if(input$sampleDataP==3) {
+            data.P <<- read.csv("magic.phe.csv", as.is=TRUE)
           }
         } else if(input$dataPInput==2){
           inFile <- input$uploadP
@@ -74,7 +91,7 @@ shinyServer(function(input, output, session) {
         # pheno
         output$pheno <- renderPlot({
           print(class(data.P))
-          hist(data.P[,2], ylab=phe.ylab, xlab=phe.xlab, main=phe.main)
+          hist(data.P[,2], ylab=phe.ylab, xlab=phe.xlab, main=phe.main, breaks = 30)
         }, height = phe.height, width = phe.width)
         
         output$phenotable <- renderDataTable({
@@ -88,7 +105,7 @@ shinyServer(function(input, output, session) {
             write.csv(data.P, file, row.names=FALSE)
           })
         
-      })  
+      })
     } else {NULL}
     
   })
@@ -103,9 +120,11 @@ shinyServer(function(input, output, session) {
 			    qtl.res <<- aovQTL(phenotype=data.P, genotype=data.G)
 			  } else {
 			    if (input$popInput==1) {
-			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G)
-			    } else {
+			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G, population = "RIL")
+			    } else if (input$popInput==2) {
 			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G, population = "F2")
+			    } else {
+			      qtl.res <<- binQTLScan(phenotype=data.P, genotype=data.G, population = "MAGIC")
 			    }
 			  }
 			  
